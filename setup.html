@@ -183,8 +183,8 @@
 
   <section class="step">
     <span class="step__no">STEP 7</span>
-    <h2>投稿する画像（#01 はじまり編・11枚）</h2>
-    <p class="step__note">第1話から第3話まで。人間チェック済み（2026-09-06）。ここから公開順の束にしていく。</p>
+    <h2>投稿する画像（#01 はじまり編・12枚）</h2>
+    <p class="step__note">第1話から第3話まで。人間チェック済み（2026-09-06）。最後の問題のこたえも入れた12枚。</p>
     <div class="thumbs" id="thumbs3"></div>
   </section>
 
@@ -199,9 +199,9 @@
 (function(){
   "use strict";
 
-  function fillThumbs(boxId, dir){
+  function fillThumbs(boxId, dir, count){
     var box = document.getElementById(boxId);
-    for(var i = 1; i <= 11; i++){
+    for(var i = 1; i <= count; i++){
       var n = (i < 10 ? "0" : "") + i;
       var a = document.createElement("a");
       a.href = dir + n + ".png";
@@ -218,9 +218,9 @@
       box.appendChild(a);
     }
   }
-  fillThumbs("thumbs", "post/korea/");
-  fillThumbs("thumbs2", "post/aiojisan2/");
-  fillThumbs("thumbs3", "post/hajimari/");
+  fillThumbs("thumbs", "post/korea/", 11);
+  fillThumbs("thumbs2", "post/aiojisan2/", 11);
+  fillThumbs("thumbs3", "post/hajimari/", 12);
 
   document.querySelectorAll("[data-copy]").forEach(function(btn){
     btn.addEventListener("click", function(){
