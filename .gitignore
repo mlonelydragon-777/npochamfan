@@ -22,6 +22,8 @@
 !post/korea/*.png
 !post/aiojisan2/
 !post/aiojisan2/*.png
+!post/hajimari/
+!post/hajimari/*.png
 
 # 以下は「人間チェック未」なので公開しない（チェックが通ったら ! を付けて足す）
 #   ちゃむ検定_はじまり編.html
