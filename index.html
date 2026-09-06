@@ -195,6 +195,22 @@
     color:var(--ink-soft);
     line-height:1.8;
   }
+  .footer__ig{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:9px 18px;
+    border-radius:999px;
+    background:var(--card);
+    border:2px solid var(--line);
+    box-shadow:0 4px 0 rgba(106,90,76,.06);
+    color:var(--berry-deep);
+    font-family:"Zen Maru Gothic", sans-serif;
+    font-weight:700;
+    font-size:.86rem;
+    text-decoration:none;
+  }
+  .footer__ig svg{width:16px; height:16px; flex:none;}
 
   :focus-visible{outline:3px solid var(--berry); outline-offset:3px;}
 
@@ -224,8 +240,19 @@
   <nav class="list" id="list" aria-label="クイズ一覧"></nav>
 
   <footer class="footer">
+    <p>
+      <a class="footer__ig" href="https://www.instagram.com/npochamfan/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+        </svg>
+        Instagram npochamfan
+      </a>
+    </p>
     <p>出典：可哀想に! 公式YouTube</p>
     <p>このページはファンが個人で作ったものです。公式とは関係ありません。</p>
+    <p>最終更新 2026-09-06</p>
   </footer>
 
 </div>
