@@ -1,0 +1,530 @@
+<title>ちゃむ検定 じょうきゅう編2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yusei+Magic&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+
+<style>
+  :root{
+    --ground:#FDF5E8;
+    --ground-2:#F6EEDF;
+    --card:#FFFFFF;
+    --aqua:#79C8E3;
+    --aqua-soft:#D9F0F8;
+    --aqua-deep:#2F7F9E;
+    --berry:#F2A0B4;
+    --berry-soft:#FCE3E9;
+    --berry-deep:#C0526C;
+    --ink:#6A5A4C;
+    --ink-soft:#A99781;
+    --line:#EADFCC;
+    --shadow:0 10px 0 rgba(106,90,76,.07), 0 18px 34px rgba(106,90,76,.10);
+    --radius:26px;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    min-height:100%;
+    background-color:var(--ground);
+    background-image:
+      radial-gradient(circle at 12% 14%, rgba(121,200,227,.20) 0 9px, transparent 10px),
+      radial-gradient(circle at 84% 9%,  rgba(242,160,180,.18) 0 7px, transparent 8px),
+      radial-gradient(circle at 90% 46%, rgba(121,200,227,.14) 0 12px, transparent 13px),
+      radial-gradient(circle at 8%  62%, rgba(242,160,180,.14) 0 10px, transparent 11px),
+      radial-gradient(circle at 70% 88%, rgba(121,200,227,.16) 0 8px, transparent 9px),
+      radial-gradient(circle at 24% 94%, rgba(242,160,180,.12) 0 11px, transparent 12px),
+      linear-gradient(180deg, var(--ground) 0%, var(--ground-2) 100%);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    font-weight:500;
+    line-height:1.8;
+    -webkit-text-size-adjust:100%;
+  }
+
+  .stage{
+    max-width:480px;
+    margin:0 auto;
+    padding:28px 18px 56px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+
+  .screen{display:none; flex-direction:column; gap:20px;}
+  .screen.is-on{display:flex; animation:rise .32s ease-out both;}
+  @keyframes rise{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;}}
+
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:26px 22px;
+  }
+
+  /* ── タイトル ───────────────────────── */
+  .hero{text-align:center; padding:34px 22px 30px;}
+  .hero__flower{width:62px; height:62px; margin:0 auto 14px; display:block;}
+  .hero__eyebrow{
+    font-size:.72rem; letter-spacing:.22em; color:var(--ink-soft);
+    margin:0 0 10px; font-weight:700;
+  }
+  .hero__title{
+    font-family:"Yusei Magic","Zen Maru Gothic",cursive;
+    font-size:2.5rem; line-height:1.25; margin:0; color:var(--aqua-deep);
+    text-wrap:balance;
+  }
+  .hero__lead{
+    margin:14px auto 0; max-width:22em; font-size:.94rem; color:var(--ink);
+  }
+
+  .levels{display:flex; flex-direction:column; gap:14px;}
+  .level{
+    width:100%; text-align:left; cursor:pointer;
+    background:var(--card); border:2px solid var(--line);
+    border-radius:22px; padding:18px 20px;
+    box-shadow:0 6px 0 rgba(106,90,76,.06);
+    font:inherit; color:inherit;
+    display:flex; align-items:center; gap:16px;
+    transition:transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+  }
+  .level:hover{border-color:var(--aqua); transform:translateY(-2px);}
+  .level:active{transform:translateY(2px); box-shadow:0 2px 0 rgba(106,90,76,.06);}
+  .level__mark{
+    flex:0 0 auto; width:46px; height:46px; border-radius:50%;
+    display:grid; place-items:center;
+    font-family:"Yusei Magic","Zen Maru Gothic",cursive; font-size:1.15rem;
+    background:var(--aqua-soft); color:var(--aqua-deep);
+  }
+  .level--hard .level__mark{background:var(--berry-soft); color:var(--berry-deep);}
+  .level__name{font-weight:900; font-size:1.12rem; line-height:1.4;}
+  .level__desc{font-size:.8rem; color:var(--ink-soft); line-height:1.6;}
+
+  .note{
+    font-size:.76rem; color:var(--ink-soft); text-align:center;
+    line-height:1.75; margin:0;
+  }
+
+  /* ── クイズ ─────────────────────────── */
+  .bar{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  .bar__level{
+    font-size:.75rem; font-weight:900; letter-spacing:.12em;
+    padding:5px 13px; border-radius:999px;
+    background:var(--aqua-soft); color:var(--aqua-deep);
+  }
+  .bar__level[data-level="hard"]{background:var(--berry-soft); color:var(--berry-deep);}
+  .bar__score{font-size:.78rem; color:var(--ink-soft); font-variant-numeric:tabular-nums;}
+
+  .petals{display:flex; gap:6px; justify-content:center; flex-wrap:wrap;}
+  .petal{width:15px; height:15px; opacity:.35; transition:opacity .2s ease, transform .2s ease;}
+  .petal.is-done{opacity:1;}
+  .petal.is-now{opacity:1; transform:scale(1.3);}
+
+  .qnum{
+    font-family:"Yusei Magic","Zen Maru Gothic",cursive;
+    font-size:.95rem; color:var(--aqua-deep); margin:0 0 6px;
+  }
+  .qtext{
+    font-size:1.24rem; font-weight:900; line-height:1.65; margin:0;
+    text-wrap:balance;
+  }
+
+  .choices{display:flex; flex-direction:column; gap:11px; margin-top:20px;}
+  .choice{
+    width:100%; min-height:56px; cursor:pointer;
+    font:inherit; font-weight:700; color:var(--ink); text-align:left;
+    background:var(--card); border:2px solid var(--line); border-radius:18px;
+    padding:13px 16px 13px 15px;
+    display:flex; align-items:center; gap:12px;
+    box-shadow:0 4px 0 rgba(106,90,76,.05);
+    transition:transform .12s ease, border-color .12s ease, background .18s ease;
+  }
+  .choice:hover:not(:disabled){border-color:var(--aqua); transform:translateY(-1px);}
+  .choice:active:not(:disabled){transform:translateY(2px);}
+  .choice:disabled{cursor:default;}
+  .choice__key{
+    flex:0 0 auto; width:28px; height:28px; border-radius:50%;
+    background:var(--ground-2); color:var(--ink-soft);
+    display:grid; place-items:center; font-size:.82rem; font-weight:900;
+    transition:background .18s ease, color .18s ease;
+  }
+  .choice.is-right{background:var(--aqua-soft); border-color:var(--aqua); color:var(--aqua-deep);}
+  .choice.is-right .choice__key{background:var(--aqua); color:#fff;}
+  .choice.is-wrong{background:var(--berry-soft); border-color:var(--berry); color:var(--berry-deep);}
+  .choice.is-wrong .choice__key{background:var(--berry); color:#fff;}
+  .choice.is-dim{opacity:.45;}
+
+  .verdict{margin-top:20px; display:none;}
+  .verdict.is-on{display:block; animation:pop .34s cubic-bezier(.2,1.5,.4,1) both;}
+  @keyframes pop{from{opacity:0; transform:scale(.86);} to{opacity:1; transform:none;}}
+  .verdict__stamp{
+    font-family:"Yusei Magic","Zen Maru Gothic",cursive;
+    font-size:1.3rem; margin:0 0 6px; color:var(--aqua-deep);
+  }
+  .verdict[data-ok="no"] .verdict__stamp{color:var(--berry-deep);}
+  .verdict__body{margin:0; font-size:.88rem; line-height:1.85; color:var(--ink);}
+
+  .next{
+    margin-top:20px; width:100%; cursor:pointer; font:inherit;
+    font-family:"Yusei Magic","Zen Maru Gothic",cursive; font-size:1.05rem;
+    background:var(--aqua); color:#fff; border:none; border-radius:999px;
+    padding:15px 20px; box-shadow:0 5px 0 #4FA8C6;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .next:active{transform:translateY(4px); box-shadow:0 1px 0 #4FA8C6;}
+  .skip4{margin:12px 0 0; font-size:.76rem; color:var(--ink-soft); text-align:center;}
+
+  /* ── 結果 ───────────────────────────── */
+  .result{text-align:center; padding:32px 22px;}
+  .result__flower{width:54px; height:54px; margin:0 auto 12px; display:block;}
+  .result__score{
+    font-family:"Yusei Magic","Zen Maru Gothic",cursive;
+    font-size:3.6rem; line-height:1; color:var(--aqua-deep);
+    margin:0; font-variant-numeric:tabular-nums;
+  }
+  .result__score small{font-size:1.3rem; color:var(--ink-soft);}
+  .result__rank{
+    font-family:"Yusei Magic","Zen Maru Gothic",cursive;
+    font-size:1.5rem; margin:14px 0 8px; color:var(--ink); text-wrap:balance;
+  }
+  .result__msg{margin:0; font-size:.9rem; color:var(--ink); line-height:1.85;}
+
+  .review{padding:22px 20px;}
+  .review__head{
+    font-size:.74rem; letter-spacing:.18em; color:var(--ink-soft);
+    font-weight:900; margin:0 0 14px;
+  }
+  .review__item{
+    display:flex; gap:11px; align-items:flex-start;
+    padding:11px 0; border-top:1px solid var(--line);
+    font-size:.84rem; line-height:1.7;
+  }
+  .review__item:first-of-type{border-top:none; padding-top:0;}
+  .review__mark{flex:0 0 auto; width:19px; height:19px; margin-top:5px;}
+  .review__q{margin:0; font-weight:700;}
+  .review__a{margin:2px 0 0; color:var(--ink-soft); font-size:.79rem;}
+
+  .again{display:flex; flex-direction:column; gap:11px;}
+  .again button{
+    width:100%; cursor:pointer; font:inherit; font-weight:900; font-size:.95rem;
+    padding:14px 18px; border-radius:999px;
+    background:var(--card); color:var(--aqua-deep); border:2px solid var(--aqua);
+    transition:transform .12s ease, background .15s ease;
+  }
+  .again button:active{transform:translateY(2px);}
+  .again button.primary{background:var(--aqua); color:#fff; border-color:var(--aqua); box-shadow:0 5px 0 #4FA8C6;}
+  .again button.primary:active{box-shadow:0 1px 0 #4FA8C6;}
+
+  .sources{font-size:.72rem; color:var(--ink-soft); line-height:1.9; text-align:center;}
+  .sources a{color:var(--aqua-deep);}
+
+  :focus-visible{outline:3px solid var(--berry); outline-offset:3px;}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;}
+  }
+</style>
+
+<div class="stage">
+
+  <!-- ── タイトル ── -->
+  <section class="screen is-on" id="screen-title">
+    <div class="card hero">
+      <svg class="hero__flower" viewBox="0 0 100 100" aria-hidden="true">
+        <g fill="#F2A0B4">
+          <ellipse cx="50" cy="24" rx="17" ry="20"/>
+          <ellipse cx="76" cy="43" rx="17" ry="20" transform="rotate(72 76 43)"/>
+          <ellipse cx="66" cy="74" rx="17" ry="20" transform="rotate(144 66 74)"/>
+          <ellipse cx="34" cy="74" rx="17" ry="20" transform="rotate(216 34 74)"/>
+          <ellipse cx="24" cy="43" rx="17" ry="20" transform="rotate(288 24 43)"/>
+        </g>
+        <circle cx="50" cy="52" r="13" fill="#FDF5E8"/>
+      </svg>
+      <p class="hero__eyebrow">んぽちゃむ ファン検定（非公式）</p>
+      <h1 class="hero__title">ちゃむ検定 じょうきゅう編2</h1>
+      <p class="hero__lead">看板の矢印、教科書のページ、通帳の名前。全10問・4択、今回も細かいちゃむ。</p>
+    </div>
+
+    <div class="levels">
+      <button class="level level--hard" data-start="jokyu">
+        <span class="level__mark">上級</span>
+        <span>
+          <span class="level__name">上級問題 その2</span><br>
+          <span class="level__desc">『裁判』『教習所1・2・3』から。ひっかけあり、10問。</span>
+        </span>
+      </button>
+    </div>
+
+    <p class="note">出題は公式YouTubeで公開されている3本の映像・セリフだけにもとづいています。<br>ファンが作った非公式のクイズです。</p>
+  </section>
+
+  <!-- ── クイズ ── -->
+  <section class="screen" id="screen-quiz">
+    <div class="bar">
+      <span class="bar__level" id="barLevel" data-level="hard">上級</span>
+      <span class="bar__score" id="barScore">せいかい 0 / 0</span>
+    </div>
+    <div class="petals" id="petals" aria-hidden="true"></div>
+
+    <div class="card">
+      <p class="qnum" id="qnum">第1問</p>
+      <h2 class="qtext" id="qtext"></h2>
+      <div class="choices" id="choices"></div>
+      <div class="verdict" id="verdict" role="status" aria-live="polite">
+        <p class="verdict__stamp" id="stamp"></p>
+        <p class="verdict__body" id="explain"></p>
+        <button class="next" id="next">つぎへ</button>
+        <p class="skip4" id="skip4" hidden>※ んぽちゃむは 4 が言えないので、第4問はないちゃむ。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 結果 ── -->
+  <section class="screen" id="screen-result">
+    <div class="card result">
+      <svg class="result__flower" viewBox="0 0 100 100" aria-hidden="true">
+        <g fill="#F2A0B4">
+          <ellipse cx="50" cy="24" rx="17" ry="20"/>
+          <ellipse cx="76" cy="43" rx="17" ry="20" transform="rotate(72 76 43)"/>
+          <ellipse cx="66" cy="74" rx="17" ry="20" transform="rotate(144 66 74)"/>
+          <ellipse cx="34" cy="74" rx="17" ry="20" transform="rotate(216 34 74)"/>
+          <ellipse cx="24" cy="43" rx="17" ry="20" transform="rotate(288 24 43)"/>
+        </g>
+        <circle cx="50" cy="52" r="13" fill="#FDF5E8"/>
+      </svg>
+      <p class="result__score"><span id="scoreNum">0</span><small> / 10問</small></p>
+      <p class="result__rank" id="rank"></p>
+      <p class="result__msg" id="rankMsg"></p>
+    </div>
+
+    <div class="card review">
+      <p class="review__head">まちがえたところ</p>
+      <div id="reviewList"></div>
+    </div>
+
+    <div class="again">
+      <button class="primary" id="retry">もういちど挑戦する</button>
+    </div>
+
+    <p class="sources">出典：可哀想に! 公式YouTube<br>
+      <a href="https://youtu.be/fy8K8SRs-Zw" target="_blank" rel="noopener">んぽちゃむ『裁判』</a>／
+      <a href="https://youtu.be/4Hq0Hqt6oKE" target="_blank" rel="noopener">『教習所』</a>／
+      <a href="https://youtu.be/8zeuLhpu6fM" target="_blank" rel="noopener">『教習所2』</a>／
+      <a href="https://youtu.be/-a0CK3846zc" target="_blank" rel="noopener">『教習所3』</a>
+    </p>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var DATA = {
+    jokyu: {
+      label: "上級編2",
+      questions: [
+        { q:"『裁判』で「弁護人、どうなんですか？」と意見を求められたときの返事は？",
+          a:"ちょっと今考えてるちゃむ", w:["異議ありちゃむ","もう少し待ってほしいちゃむ","弁護人はお休みちゃむ"],
+          e:"まだ何も考えていなかった。裁判長に「時間の無駄ですね」と急かされるちゃむ。" },
+        { q:"『裁判』で弁護士が出したアリバイ写真。被告人は両手に何を持って写っていた？",
+          a:"チョコバナナと綿あめ", w:["焼きイカと綿あめ","かき氷とりんご飴","たこ焼きとラムネ"],
+          e:"花火を背景に、片手に顔の描かれたチョコバナナ、片手にピンクの綿あめ。「この人お祭りに行ってましたよ」ちゃむ。" },
+        { q:"『裁判』で、ナイフの指紋の付き方から犯人について分かったことは？",
+          a:"左利きである", w:["右利きである","手袋をしていた","二人以上いる"],
+          e:"「犯人は左利き、つまりこの人の利き手とは逆」。指紋そのものではなく“付き方”が決め手ちゃむ。" },
+        { q:"『裁判』で明かされた、被害者の解剖からわかった真相は？",
+          a:"料理中にトマトとナイフを落としただけ", w:["ナイフは最初から偽物だった","被害者は生きていた","第三者が持ち込んだナイフだった"],
+          e:"赤い染みは血ではなくトマト。事件ですらなかったちゃむ。" },
+        { q:"『教習所』で、先生が最初に「開いてください」と言った教科書のページは？",
+          a:"45ページ", w:["12ページ","54ページ","103ページ"],
+          e:"「教科書の45ページ開いてください」から授業が始まる。廊下の張り紙は「SHA KOO（車校）」ちゃむ。" },
+        { q:"『教習所』で「車」を連呼する音読のあと、んぽちゃむが読めずにいた言葉。正しい読みは？",
+          a:"電車", w:["車庫","自動車","歯車"],
+          e:"「これなんて読むちゃむ？」と、先生にではなくきみまろにこっそり聞いて教わるちゃむ。" },
+        { q:"『教習所2』で、社長が警官に取り押さえられたときに告げられた罪状は？",
+          a:"免許偽造罪", w:["無免許運転罪","公文書偽造罪","詐欺罪"],
+          e:"「12時25、6分、免許偽造罪で逮捕」。社長は「真心込めて偽造した」と言っていたちゃむ。" },
+        { q:"『教習所2』で、社長が「免許はここに隠しておく」と言って偽造免許証を押し込んだ場所は？",
+          a:"んぽちゃむのオムライス", w:["んぽちゃむの花飾りの中","テーブルの裏","社長のカツラの中"],
+          e:"連行されたあと、んぽちゃむは「人のオムライス台無しにして」と怒る。隠し場所だと気づいていないちゃむ。" },
+        { q:"『教習所3』で、店員が告げた車のお値段は？",
+          a:"1億マカロン", w:["100万マカロン","200万マカロン","1億円"],
+          e:"通帳にあったのは200万マカロン。桁がまるで足りないちゃむ。" },
+        { q:"『教習所3』で映る、んぽちゃむの通帳の名前は？",
+          a:"ノーマル預金", w:["スーパー預金","マカロン預金","ちゃむ銀行"],
+          e:"手書き風の「ノーマル預金」。記帳欄には「スーパーノーマル」という項目もあるちゃむ。" }
+      ],
+      ranks: [
+        { min:10, name:"看板の矢印まで数えた人", msg:"全問正解。もう画面の隅しか見ていないちゃむ。" },
+        { min:8,  name:"通帳の名前を覚えている人", msg:"ほぼ完璧。細かいところが目に残っているちゃむ。" },
+        { min:5,  name:"話の筋はばっちりな人", msg:"半分以上は正解。あとは小道具をもう一周ちゃむ。" },
+        { min:2,  name:"マカロンで払おうとする人", msg:"まだあやふや。でも桁が違うのは分かったちゃむ。" },
+        { min:0,  name:"次はよく見てほしいちゃむ", msg:"4本とも、見返すと全部そこに映っているちゃむ。" }
+      ]
+    }
+  };
+
+  var SHOWN = [1,2,3,5,6,7,8,9,10,11];
+  var KEYS = ["A","B","C","D"];
+
+  var el = function(id){ return document.getElementById(id); };
+  var screens = {
+    title: el("screen-title"),
+    quiz:  el("screen-quiz"),
+    result:el("screen-result")
+  };
+
+  var state = { level:"jokyu", order:[], index:0, score:0, log:[], locked:false };
+
+  function shuffle(arr){
+    var a = arr.slice(), i, j, t;
+    for(i = a.length - 1; i > 0; i--){
+      j = Math.floor(Math.random() * (i + 1));
+      t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function show(name){
+    Object.keys(screens).forEach(function(k){ screens[k].classList.remove("is-on"); });
+    screens[name].classList.add("is-on");
+    window.scrollTo({ top:0, behavior:"instant" in window ? "instant" : "auto" });
+  }
+
+  function flowerSVG(fill, opacity){
+    return '<svg class="petal" viewBox="0 0 100 100" style="opacity:' + opacity + '">' +
+      '<g fill="' + fill + '">' +
+      '<ellipse cx="50" cy="24" rx="17" ry="20"/>' +
+      '<ellipse cx="76" cy="43" rx="17" ry="20" transform="rotate(72 76 43)"/>' +
+      '<ellipse cx="66" cy="74" rx="17" ry="20" transform="rotate(144 66 74)"/>' +
+      '<ellipse cx="34" cy="74" rx="17" ry="20" transform="rotate(216 34 74)"/>' +
+      '<ellipse cx="24" cy="43" rx="17" ry="20" transform="rotate(288 24 43)"/>' +
+      '</g><circle cx="50" cy="52" r="13" fill="#FFFFFF"/></svg>';
+  }
+
+  function drawPetals(){
+    var html = "", i, r;
+    for(i = 0; i < 10; i++){
+      r = state.log[i];
+      if(r === undefined){
+        html += flowerSVG("#D8CBB6", i === state.index ? 1 : .35);
+      }else{
+        html += flowerSVG(r.ok ? "#79C8E3" : "#F2A0B4", 1);
+      }
+    }
+    el("petals").innerHTML = html;
+  }
+
+  function start(level){
+    state.level = level;
+    state.order = shuffle(DATA[level].questions);
+    state.index = 0;
+    state.score = 0;
+    state.log = [];
+    state.locked = false;
+    el("barLevel").textContent = DATA[level].label;
+    el("barLevel").setAttribute("data-level", "hard");
+    show("quiz");
+    render();
+  }
+
+  function render(){
+    var item = state.order[state.index];
+    var pool = shuffle([item.a].concat(item.w));
+    var box = el("choices");
+
+    state.locked = false;
+    el("qnum").textContent = "第" + SHOWN[state.index] + "問";
+    el("qtext").textContent = item.q;
+    el("barScore").textContent = "せいかい " + state.score + " / " + state.index;
+    el("verdict").classList.remove("is-on");
+    el("skip4").hidden = true;
+    drawPetals();
+
+    box.innerHTML = "";
+    pool.forEach(function(text, i){
+      var b = document.createElement("button");
+      b.className = "choice";
+      b.type = "button";
+      b.innerHTML = '<span class="choice__key">' + KEYS[i] + '</span><span>' + text + '</span>';
+      b.addEventListener("click", function(){ answer(b, text, item); });
+      box.appendChild(b);
+    });
+  }
+
+  function answer(btn, picked, item){
+    if(state.locked){ return; }
+    state.locked = true;
+
+    var ok = picked === item.a;
+    if(ok){ state.score++; }
+    state.log[state.index] = { ok:ok, q:item.q, a:item.a, picked:picked };
+
+    Array.prototype.forEach.call(el("choices").children, function(node){
+      node.disabled = true;
+      var label = node.lastElementChild.textContent;
+      if(label === item.a){
+        node.classList.add("is-right");
+      }else if(node === btn){
+        node.classList.add("is-wrong");
+      }else{
+        node.classList.add("is-dim");
+      }
+    });
+
+    el("stamp").textContent = ok ? "せいかい！" : "ざんねん…";
+    el("verdict").setAttribute("data-ok", ok ? "yes" : "no");
+    el("explain").textContent = (ok ? "" : "正解は「" + item.a + "」。") + item.e;
+    el("barScore").textContent = "せいかい " + state.score + " / " + (state.index + 1);
+
+    var last = state.index === 9;
+    el("next").textContent = last ? "結果を見る" : "第" + SHOWN[state.index + 1] + "問へ";
+    el("skip4").hidden = state.index !== 2;
+    el("verdict").classList.add("is-on");
+    drawPetals();
+    el("next").focus({ preventScroll:true });
+  }
+
+  function next(){
+    if(state.index === 9){ finish(); return; }
+    state.index++;
+    render();
+  }
+
+  function finish(){
+    var conf = DATA[state.level];
+    var rank = conf.ranks.filter(function(r){ return state.score >= r.min; })[0];
+    var misses = state.log.filter(function(r){ return !r.ok; });
+
+    el("scoreNum").textContent = state.score;
+    el("rank").textContent = rank.name;
+    el("rankMsg").textContent = rank.msg;
+
+    var list = el("reviewList");
+    list.innerHTML = "";
+    if(misses.length === 0){
+      list.innerHTML = '<p class="review__q" style="margin:0">まちがいなし。全部あっていたちゃむ。</p>';
+    }else{
+      misses.forEach(function(r){
+        var row = document.createElement("div");
+        row.className = "review__item";
+        row.innerHTML =
+          '<span class="review__mark">' + flowerSVG("#F2A0B4", 1) + '</span>' +
+          '<span><p class="review__q">' + r.q + '</p>' +
+          '<p class="review__a">正解：' + r.a + '　／　あなた：' + r.picked + '</p></span>';
+        list.appendChild(row);
+      });
+    }
+
+    show("result");
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-start]"), function(b){
+    b.addEventListener("click", function(){ start(b.getAttribute("data-start")); });
+  });
+  el("next").addEventListener("click", next);
+  el("retry").addEventListener("click", function(){ start(state.level); });
+})();
+</script>
