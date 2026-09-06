@@ -6,6 +6,7 @@
 !.gitignore
 !index.html
 !ちゃむ検定.html
+!ちゃむ検定_AIおじさん2編.html
 !ちゃむ検定_じょうきゅう編.html
 !ちゃむ検定_じょうきゅう編2.html
 !ちゃむ検定_どうが編.html
@@ -18,6 +19,8 @@
 !post/
 !post/korea/
 !post/korea/*.png
+!post/aiojisan2/
+!post/aiojisan2/*.png
 
 # 以下は「人間チェック未」なので公開しない（チェックが通ったら ! を付けて足す）
 #   ちゃむ検定_はじまり編.html

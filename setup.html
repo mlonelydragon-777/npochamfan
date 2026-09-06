@@ -169,9 +169,16 @@
 
   <section class="step">
     <span class="step__no">STEP 5</span>
-    <h2>1投稿目の画像（韓国編・11枚）</h2>
+    <h2>投稿する画像（韓国編・11枚）</h2>
     <p class="step__note">1枚ずつ長押しして保存し、この番号の順にカルーセルへ並べる。人間チェック済みの束。</p>
     <div class="thumbs" id="thumbs"></div>
+  </section>
+
+  <section class="step">
+    <span class="step__no">STEP 6</span>
+    <h2>投稿する画像（AIおじさん2編・11枚）</h2>
+    <p class="step__note">最新回「AIおじさん2」から5問。人間チェック済み（2026-09-06）。</p>
+    <div class="thumbs" id="thumbs2"></div>
   </section>
 
   <p class="foot">
@@ -185,23 +192,27 @@
 (function(){
   "use strict";
 
-  var thumbs = document.getElementById("thumbs");
-  for(var i = 1; i <= 11; i++){
-    var n = (i < 10 ? "0" : "") + i;
-    var a = document.createElement("a");
-    a.href = "post/korea/" + n + ".png";
-    a.target = "_blank";
-    a.rel = "noopener";
-    var img = document.createElement("img");
-    img.src = a.href;
-    img.alt = n + "枚目";
-    img.loading = "lazy";
-    var b = document.createElement("b");
-    b.textContent = n;
-    a.appendChild(img);
-    a.appendChild(b);
-    thumbs.appendChild(a);
+  function fillThumbs(boxId, dir){
+    var box = document.getElementById(boxId);
+    for(var i = 1; i <= 11; i++){
+      var n = (i < 10 ? "0" : "") + i;
+      var a = document.createElement("a");
+      a.href = dir + n + ".png";
+      a.target = "_blank";
+      a.rel = "noopener";
+      var img = document.createElement("img");
+      img.src = a.href;
+      img.alt = n + "枚目";
+      img.loading = "lazy";
+      var b = document.createElement("b");
+      b.textContent = n;
+      a.appendChild(img);
+      a.appendChild(b);
+      box.appendChild(a);
+    }
   }
+  fillThumbs("thumbs", "post/korea/");
+  fillThumbs("thumbs2", "post/aiojisan2/");
 
   document.querySelectorAll("[data-copy]").forEach(function(btn){
     btn.addEventListener("click", function(){
