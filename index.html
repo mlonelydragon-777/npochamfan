@@ -261,18 +261,16 @@
 (function(){
   "use strict";
 
-  // ready:false の3本（はじまり編・たべもの編・日常編）は、
-  // 人間チェック（企画.md 前提6）がまだ済んでいないため公開しない。
+  // 2026-09-06 から、公開順に「#01」「#02」…と束ねて出していく方針。
+  // 旧・はじまり編／たべもの編／日常編は人間チェック前なので、この一覧には出さない。
   var QUIZZES = [
+    { file:"ちゃむ検定_01_はじまり編.html", title:"#01 はじまり編",  lead:"第1話〜第3話。マカロン、ピザ、乗り換えの回数", count:"5問",  ready:true },
     { file:"ちゃむ検定_AIおじさん2編.html", title:"AIおじさん2編",   lead:"最新回から。本の表紙、名札の公約、アナウンサーの名前", count:"5問",  ready:true },
     { file:"ちゃむ検定.html",             title:"ちゃむ検定",       lead:"んぽちゃむのことをどれだけ知ってるか", count:"20問", ready:true },
     { file:"ちゃむ検定_じょうきゅう編.html", title:"じょうきゅう編",   lead:"服の文字、時計の針、セリフの順番",       count:"10問", ready:true },
     { file:"ちゃむ検定_じょうきゅう編2.html", title:"じょうきゅう編2",  lead:"看板の矢印、教科書のページ、通帳の名前", count:"10問", ready:true },
     { file:"ちゃむ検定_どうが編.html",       title:"どうが編",         lead:"動画3本を、ちゃんと見てたか",           count:"10問", ready:true },
-    { file:"ちゃむ検定_スパ沢さん編.html",   title:"スパ沢さん編",     lead:"『スパ沢さん』1本だけで10問",           count:"10問", ready:true },
-    { file:"ちゃむ検定_はじまり編.html",     title:"はじまり編",       lead:"いちばん最初の5本から",                 count:"10問", ready:false },
-    { file:"ちゃむ検定_たべもの編.html",     title:"たべもの編",       lead:"焼き芋、祭り、ポップコーン、ケーキ",     count:"10問", ready:false },
-    { file:"ちゃむ検定_日常編.html",         title:"日常編",           lead:"引き戸、静電気、クロップド丈",           count:"10問", ready:false }
+    { file:"ちゃむ検定_スパ沢さん編.html",   title:"スパ沢さん編",     lead:"『スパ沢さん』1本だけで10問",           count:"10問", ready:true }
   ];
 
   var list = document.getElementById("list");
