@@ -504,7 +504,7 @@
     el("explain").textContent = (ok ? "" : "正解は「" + item.a + "」。") + item.e;
     el("barScore").textContent = "せいかい " + state.score + " / " + (state.index + 1);
 
-    var last = state.index === 9;
+    var last = state.index === state.order.length - 1;
     el("next").textContent = last ? "結果を見る" : "第" + SHOWN[state.index + 1] + "問へ";
     el("skip4").hidden = state.index !== 2;
     el("verdict").classList.add("is-on");
@@ -513,7 +513,7 @@
   }
 
   function next(){
-    if(state.index === 9){ finish(); return; }
+    if(state.index === state.order.length - 1){ finish(); return; }
     state.index++;
     render();
   }
